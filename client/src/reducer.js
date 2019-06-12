@@ -1,3 +1,5 @@
+import { PIN_DELETED_SUBSCRIPTION } from "./graphql/subscriptions";
+
 export default function reducer(state, { type, payload }) {
   switch (type) {
     case "LOGIN_USER":
@@ -56,9 +58,18 @@ export default function reducer(state, { type, payload }) {
     case "DELETE_PIN":
       const deleted = payload;
       const filtered = state.pins.filter(pin => pin._id !== deleted._id);
+      if (state.currentPin) {
+        const isCurrentPin = deleted._id === state.currentPin._id;
+        if (isCurrentPin) {
+          return {
+            ...state,
+            currentPin: null,
+            pins: filtered
+          };
+        }
+      }
       return {
         ...state,
-        currentPin: null,
         pins: filtered
       };
     case "CREATE_COMMENT":

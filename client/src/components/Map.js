@@ -66,6 +66,14 @@ const Map = ({ classes }) => {
   const { state, dispatch } = useContext(Context);
   const [viewport, setViewport] = useState(initialViewport);
   const [popup, setPopup] = useState(null);
+  // REMOVE POPUP IF PIN DELETED BY AUTHOR
+  useEffect(() => {
+    const pinExists =
+      popup && state.pins.findIndex(pin => pin._id === popup._id) > -1;
+    if (!pinExists) {
+      setPopup(null);
+    }
+  }, [state.pins.length]);
 
   // OTHER UTILITIES
   const handleMapClick = ({ leftButton, lngLat }) => {
