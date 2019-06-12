@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 import { Subscription } from "react-apollo";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 
 import { useClient } from "../client";
 import { GET_PINS_QUERY } from "../graphql/queries";
@@ -26,6 +27,7 @@ const initialViewport = {
 };
 
 const Map = ({ classes }) => {
+  const mobileSize = useMediaQuery("(max-width: 650px)");
   //GET PINS STATE, FUNCTION AND EFFECT
   const client = useClient();
   useEffect(() => {
@@ -106,7 +108,7 @@ const Map = ({ classes }) => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={mobileSize ? classes.rootMobile : classes.root}>
       <ReactMapGL
         mapboxApiAccessToken="pk.eyJ1IjoidGhlYmdhcmRuZXIiLCJhIjoiY2p3bnR3Y20yMGZzNjQ4bnMxZnZ1MjVucSJ9.FZ5m_MoQBNmEznOdQ1LrHw"
         width="100vw"
@@ -114,6 +116,7 @@ const Map = ({ classes }) => {
         mapStyle="mapbox://styles/mapbox/streets-v9"
         onViewportChange={viewport => setViewport(viewport)}
         onClick={handleMapClick}
+        scrollZoom={!mobileSize}
         {...viewport}
       >
         <div className={classes.navigationControl}>
