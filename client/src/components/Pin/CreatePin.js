@@ -34,8 +34,7 @@ const CreatePin = ({ classes }) => {
         latitude: state.draft.latitude,
         longitude: state.draft.longitude
       };
-      const { createPin } = await client.request(createPinMutation, variables);
-      dispatch({ type: "CREATE_PIN", payload: createPin });
+      await client.request(createPinMutation, variables);
 
       handleDeleteDraft();
     } catch (error) {
